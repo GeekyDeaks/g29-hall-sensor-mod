@@ -1,6 +1,6 @@
 $fn = 50;
 
-MAG_DIAMETER = 6;
+MAG_DIAMETER = 6.1;
 MAG_HEIGHT = 2;
 
 ASSEMBLY_WIDTH = 22; // width of the assembly up to the flange
@@ -12,19 +12,19 @@ SENSOR_HEIGHT = 3;
 
 SENSOR_HOLDER_DIAMETER = 14;
 SENSOR_HOLDER_FLANGE_DIAMETER = 20; // bit outside the base
-BASE_HOLE_DIAMETER = 16;
+BASE_HOLE_DIAMETER = 16.1;
 BASE_INTERFERENCE_WIDTH = 4;
 
-HOLDER_OVERLAP = 4;
+HOLDER_OVERLAP = 2;
 OVERLAP_DIAMETER = 8;
 
 MAG_HOLDER_DIAMETER = 12;
-MAG_HOLDER_LENGTH = 16;
+MAG_HOLDER_LENGTH = 14;
 MAG_ROTATION_OFFSET = 80;
 
 POT_SHAFT_HEIGHT = 5;
-POT_SHAFT_DIAMETER = 6.3;
-POT_SHAFT_RECESS = 2.5;
+POT_SHAFT_DIAMETER = 6.4;
+POT_SHAFT_RECESS = 2.6;
 
 
 module copy_mirror(vec=[0,1,0]) 
@@ -68,7 +68,7 @@ module mag_holder() {
 
         translate([0, 0, MAG_HOLDER_LENGTH + 0.01])
         rotate([0, 180, 0])
-        cylinder(d = OVERLAP_DIAMETER + 0.05, h = HOLDER_OVERLAP + 0.05);
+        cylinder(d = OVERLAP_DIAMETER + 0.15, h = HOLDER_OVERLAP + 0.15);
 
     }
     
@@ -76,9 +76,9 @@ module mag_holder() {
 
 
 module sensor_holder() {
-    overlap = HOLDER_OVERLAP - 0.05;
-    main_width = ASSEMBLY_WIDTH - MAG_HEIGHT - BASE_INTERFERENCE_WIDTH;
-    cylinder(d = OVERLAP_DIAMETER - 0.05, h = overlap);
+    overlap = HOLDER_OVERLAP - 0.15;
+    main_width = ASSEMBLY_WIDTH - MAG_HOLDER_LENGTH - BASE_INTERFERENCE_WIDTH;
+    cylinder(d = OVERLAP_DIAMETER - 0.15, h = overlap);
     translate([0, 0, overlap])
     cylinder(d = SENSOR_HOLDER_DIAMETER, h = main_width, $fn = 6);
     translate([0, 0, overlap + main_width])
@@ -88,8 +88,8 @@ module sensor_holder() {
 
 }
 
-//mag_holder();
-//translate([0, 0, MAG_HOLDER_LENGTH + HOLDER_OVERLAP]) 
+mag_holder();
+translate([0, 0, MAG_HOLDER_LENGTH + HOLDER_OVERLAP]) 
 sensor_holder();
 
 
