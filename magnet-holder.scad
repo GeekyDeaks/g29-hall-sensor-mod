@@ -33,15 +33,10 @@ module mag_holder() {
         rotate([90, 0, 0]) 
         cylinder(d1 = MAG_DIAMETER, d2 = MAG_DIAMETER + 0.2, h = MAG_HEIGHT * 2 );
 
-        // hole for sensor between magnets
-        translate([0, 0, MAG_HOLDER_LENGTH + 0.01])
-        rotate([0, 180, 0])
-        cylinder(d = SENSOR_HOLE_DIAMETER, h = MAG_HOLDER_LENGTH - SENSOR_OFFSET + (SENSOR_HEIGHT /2 ));
-
         // hole for overlap between the holders
         translate([0, 0, MAG_HOLDER_LENGTH + 0.01])
         rotate([0, 180, 0])
-        cylinder(d = OVERLAP_DIAMETER + 0.15, h = HOLDER_OVERLAP + 0.15);
+        cylinder(d = OVERLAP_DIAMETER + 0.15, h = HOLDER_OVERLAP + 0.3);
 
     }
     

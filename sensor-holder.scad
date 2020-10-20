@@ -12,7 +12,6 @@ module sensor_profile() {
 
 }
 
-
 module sensor_holder_body() {
 
     // solid model of the sensor holder to allow different 
@@ -20,22 +19,18 @@ module sensor_holder_body() {
     overlap = HOLDER_OVERLAP - 0.15;
     main_width = ASSEMBLY_WIDTH - MAG_HOLDER_LENGTH - BASE_INTERFERENCE_WIDTH;
 
-
     // small little guide for the sensor
     difference() {
 
-        translate([0, 0, -SENSOR_HEIGHT * 0.6])
-        cylinder(d = SENSOR_WIDTH, h = SENSOR_HEIGHT * 0.6);
+        // overlap cylinder
+        cylinder(d1 = OVERLAP_DIAMETER - 0.3, d2 = OVERLAP_DIAMETER - 0.15, h = overlap);
 
-        translate([0, 0, -SENSOR_HEIGHT ])
+        translate([0, 0, -.01])
         rotate([0, 0, 270])
-        linear_extrude(height = SENSOR_HEIGHT, center = false)
+        linear_extrude(height = SENSOR_HEIGHT + 0.01, center = false)
         sensor_profile();
     }
 
-
-    // overlap cylinder
-    cylinder(d = OVERLAP_DIAMETER - 0.15, h = overlap);
     // main hex shaped part
     translate([0, 0, overlap])
     cylinder(d = SENSOR_HOLDER_DIAMETER, h = main_width, $fn = 6);

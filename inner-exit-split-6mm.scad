@@ -2,16 +2,16 @@ $fn = 50;
 
 MAG_DIAMETER = 6.15;
 MAG_HEIGHT = 3;
-MAG_DISTANCE = 3.5;  // distance of magnet from the sensor centre
+MAG_DISTANCE = 3.8;  // distance of magnet from the sensor centre
 
 ASSEMBLY_WIDTH = 22; // width of the assembly up to the flange
 
-SENSOR_OFFSET = 7; // where the midpoint of the sensor will sit from the base of the magnet holder
+SENSOR_OFFSET = 7.5; // where the midpoint of the sensor will sit from the base of the magnet holder
 SENSOR_HOLE_DIAMETER = 5.5;
-SENSOR_WIDTH = 4.15;  // physical outer dimensions of the sensor
+SENSOR_WIDTH = 4.4;  // physical outer dimensions of the sensor
 SENSOR_HEIGHT = 3;
-SENSOR_DEPTH = 1.55;
-SENSOR_FRONT_DEPTH = 0.79; // distance from front face to pins
+SENSOR_DEPTH = 1.6;
+SENSOR_FRONT_DEPTH = 0.85; // distance from front face to pins
 SENSOR_LEAD_LENGTH = 9;
 SENSOR_LEAD_DEPTH = SENSOR_DEPTH - SENSOR_FRONT_DEPTH;
 
@@ -22,17 +22,17 @@ SENSOR_HOLDER_FLANGE_WIDTH = 4;
 BASE_HOLE_DIAMETER = 16.15;
 BASE_INTERFERENCE_WIDTH = 3.5;
 
-OVERLAP_DIAMETER = 8;
+OVERLAP_DIAMETER = 7.7;
 
 MAG_HOLDER_DIAMETER = (MAG_HEIGHT + MAG_DISTANCE) * 2;
-MAG_HOLDER_LENGTH = 12;
-MAG_ROTATION_OFFSET = 80;
+MAG_HOLDER_LENGTH = 11;
+MAG_ROTATION_OFFSET = 100;
 
 POT_SHAFT_HEIGHT = 5;
 POT_SHAFT_DIAMETER = 6.4;
 POT_SHAFT_RECESS = 2.6;
 
-HOLDER_OVERLAP = MAG_HOLDER_LENGTH - SENSOR_OFFSET - (SENSOR_HEIGHT / 2);
+HOLDER_OVERLAP = MAG_HOLDER_LENGTH - SENSOR_OFFSET + (SENSOR_HEIGHT / 2);
 
 CONN_WIDTH = 7.6;
 CONN_PIN_WIDTH = 5.5; // distance between the outer two pins
@@ -43,9 +43,9 @@ include <magnet-holder.scad>;
 include <sensor-holder.scad>;
 
 
-SPLIT_POINT = 7;
+SPLIT_POINT = 8;
 DOWEL_DIAMETER = 3;
-DOWEL_DEPTH = 3;
+DOWEL_DEPTH = 2.75;
 
 module upper() {
 
@@ -119,19 +119,15 @@ module lower() {
 
     // dowels
     translate([SENSOR_HOLDER_DIAMETER / 2 - DOWEL_DIAMETER, 0, SPLIT_POINT - DOWEL_DEPTH + 0.3])
-    cylinder(d = DOWEL_DIAMETER - 0.3, h = DOWEL_DEPTH);
-
+    cylinder(d1 = DOWEL_DIAMETER - 0.25, d2 = DOWEL_DIAMETER - 0.15, h = DOWEL_DEPTH);
 
     translate([-SENSOR_HOLDER_DIAMETER / 2 + DOWEL_DIAMETER, 0, SPLIT_POINT - DOWEL_DEPTH + 0.3])
-    cylinder(d = DOWEL_DIAMETER - 0.3, h = DOWEL_DEPTH);
-
-
+    cylinder(d1 = DOWEL_DIAMETER - 0.25, d2 = DOWEL_DIAMETER - 0.15, h = DOWEL_DEPTH);
 
 }
 
-
 mag_holder();
-translate([0, 0, MAG_HOLDER_LENGTH + HOLDER_OVERLAP * 2])
+translate([0, 0, MAG_HOLDER_LENGTH * 2])
 upper();
-translate([0, 0, MAG_HOLDER_LENGTH + (HOLDER_OVERLAP * 2) + SPLIT_POINT + 10])
+translate([0, 0, MAG_HOLDER_LENGTH * 3])
 lower();
