@@ -135,7 +135,7 @@ module front(offset=0) {
             cylinder(d=FRONT_SHAFT_DIAMETER, h=FRONT_SHAFT_LENGTH);
         }
         translate([0, 0, -0.001])
-        cylinder(d=SHAFT_DIAMETER + 0.2, h=FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS + 0.002);
+        cylinder(d=SHAFT_DIAMETER + 0.4, h=FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS + 0.002);
 
         // lock ring recess
         translate([0, 0, FRONT_WALL_THICKNESS + LOCK_OFFSET])
@@ -176,7 +176,7 @@ module sensor_holder() {
         cube([SENSOR_LEAD_DEPTH, SENSOR_WIDTH,REAR_WALL_THICKNESS + 0.002]);
 
         translate([0,0, REAR_WALL_THICKNESS + MAG_DIAMETER])
-        front_alignment_tabs(0.15);
+        front_alignment_tabs(0.25);
 
     }
 
