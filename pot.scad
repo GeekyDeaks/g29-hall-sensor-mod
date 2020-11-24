@@ -4,7 +4,7 @@ MAG_DIAMETER = 6.15;
 MAG_HEIGHT = 3;
 MAG_DISTANCE = 3.5;  // distance of magnet from the sensor centre
 
-MAG_ROTATION_OFFSET=5;
+MAG_ROTATION_OFFSET=0;
 
 MAG_HOLDER_RADIUS = sqrt( pow(MAG_DIAMETER / 2, 2) + pow(MAG_HEIGHT + MAG_DISTANCE, 2) );
 
@@ -39,7 +39,7 @@ LOCK_OFFSET = 1.7;
 LOCK_WIDTH = 2;
 
 CLIP_WIDTH = FRONT_SHAFT_DIAMETER + 2;
-CLIP_LENGTH = 15;
+CLIP_LENGTH = 15.5;
 CLIP_HEIGHT = LOCK_WIDTH - 0.2;
 
 module copy_mirror(vec=[0,1,0]) 
@@ -184,6 +184,12 @@ module sensor_holder() {
         translate([0,0, REAR_WALL_THICKNESS + SENSOR_HOLDER_INNER_HEIGHT])
         front_alignment_tabs(0.1);
 
+        // little indentation to show Vcc for the sensor
+        translate([SENSOR_LEAD_DEPTH + .7, SENSOR_WIDTH * .4, -0.001])
+        linear_extrude(1)
+        polygon([ [0, 0], [1.5, .8], [1.5, -.8]]);
+        //cylinder(r=1, h=1);
+
     }
 
 
@@ -201,12 +207,11 @@ module clip() {
             translate([-CLIP_WIDTH/2, CLIP_LENGTH , 0])
             cube([CLIP_WIDTH , CLIP_WIDTH * 0.25, CLIP_HEIGHT * 2]);
         }
-        hull() {
-            translate([0,0, -0.001])
-            cylinder(d=inner_diameter, h=CLIP_HEIGHT + 0.002);
-            translate([-(inner_diameter - 1)/2, -inner_diameter, -0.001])
-            cube([inner_diameter - 1, 1, CLIP_HEIGHT + 0.002]);
-        }
+        translate([0,0, -0.001])
+        cylinder(d=inner_diameter, h=CLIP_HEIGHT + 0.002);
+        translate([0, -inner_diameter/2, CLIP_HEIGHT/2])
+        cube([inner_diameter - 1.5, inner_diameter, CLIP_HEIGHT + 0.002], center=true);
+
 
     }
 
