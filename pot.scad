@@ -4,7 +4,7 @@ MAG_DIAMETER = 6.15;
 MAG_HEIGHT = 3;
 MAG_DISTANCE = 3.5;  // distance of magnet from the sensor centre
 
-MAG_ROTATION_OFFSET=0;
+MAG_ROTATION_OFFSET=5;
 
 MAG_HOLDER_RADIUS = sqrt( pow(MAG_DIAMETER / 2, 2) + pow(MAG_HEIGHT + MAG_DISTANCE, 2) );
 
@@ -13,9 +13,7 @@ REAR_WALL_THICKNESS = 2;
 SIDE_WALL_THICKNESS = 3;
 
 FRONT_SHAFT_LENGTH = 9; // 
-FRONT_SHAFT_DIAMETER = 8.95; //
-
-
+FRONT_SHAFT_DIAMETER = 8.85; //
 
 EXPOSED_SHAFT_HEIGHT = 15; // how much of the shaft protrudes from the front cover
 SHAFT_HEIGHT = EXPOSED_SHAFT_HEIGHT + FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS;
@@ -23,13 +21,14 @@ SHAFT_DIAMETER = 6.3;
 SHAFT_RECESS = 2.4;
 SHAFT_RECESS_HEIGHT = 11;
 
-SENSOR_WIDTH = 4.2;  // physical outer dimensions of the sensor
+SENSOR_WIDTH = 4.25;  // physical outer dimensions of the sensor
 SENSOR_HEIGHT = 3;
-SENSOR_DEPTH = 1.65;
-SENSOR_FRONT_DEPTH = 0.79; // distance from front face to pins
+SENSOR_DEPTH = 1.7;
+SENSOR_FRONT_DEPTH = 0.85; // distance from front face to pins
 SENSOR_LEAD_DEPTH = SENSOR_DEPTH - SENSOR_FRONT_DEPTH;
 
 SENSOR_HOLDER_DIAMETER = SENSOR_WIDTH + 2;
+SENSOR_HOLDER_INNER_HEIGHT = MAG_DIAMETER + 0.2;
 
 ALIGNMENT_TAB_RADIUS = 1.5;
 ALIGNMENT_TAB_OFFSET = 12;
@@ -38,6 +37,10 @@ ALIGNMENT_TAB_LENGTH = 1.7;
 
 LOCK_OFFSET = 1.7;
 LOCK_WIDTH = 2;
+
+CLIP_WIDTH = FRONT_SHAFT_DIAMETER + 2;
+CLIP_LENGTH = 15;
+CLIP_HEIGHT = LOCK_WIDTH - 0.2;
 
 module copy_mirror(vec=[0,1,0]) 
 { 
@@ -54,9 +57,11 @@ module lock_ring(r=10, offset=0) {
 
 module shaft() {
 
+    cylinder(d=SHAFT_DIAMETER, h=SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT + 0.001);
+    translate([0,0, SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT])
     difference() {
-        cylinder(d=SHAFT_DIAMETER, h=SHAFT_HEIGHT);
-        translate([SHAFT_DIAMETER/2 - SHAFT_RECESS, -SHAFT_DIAMETER/2, SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT])
+        cylinder(d1=SHAFT_DIAMETER, d2=SHAFT_DIAMETER * .95, h=SHAFT_RECESS_HEIGHT);
+        translate([SHAFT_DIAMETER/2 - SHAFT_RECESS, -SHAFT_DIAMETER/2, 0])
         cube([SHAFT_RECESS + 0.001, SHAFT_DIAMETER, SHAFT_RECESS_HEIGHT + 0.001]);
     }
 
@@ -107,10 +112,10 @@ module sensor_profile() {
 module front_alignment_tabs(offset=0) {
 
     hull() {
-        translate([0, ALIGNMENT_TAB_OFFSET, 0])
-        cylinder(r=ALIGNMENT_TAB_BASE_RADIUS + offset, h=FRONT_WALL_THICKNESS + offset );
-        translate([0, -ALIGNMENT_TAB_OFFSET, 0])
-        cylinder(r=ALIGNMENT_TAB_BASE_RADIUS + offset, h=FRONT_WALL_THICKNESS + offset);
+        translate([0, ALIGNMENT_TAB_OFFSET, -offset])
+        cylinder(r=ALIGNMENT_TAB_BASE_RADIUS + offset, h=FRONT_WALL_THICKNESS + offset * 2 );
+        translate([0, -ALIGNMENT_TAB_OFFSET, -offset])
+        cylinder(r=ALIGNMENT_TAB_BASE_RADIUS + offset, h=FRONT_WALL_THICKNESS + offset * 2);
     }
 
     translate([0, ALIGNMENT_TAB_OFFSET, FRONT_WALL_THICKNESS])
@@ -118,16 +123,20 @@ module front_alignment_tabs(offset=0) {
     translate([0, -ALIGNMENT_TAB_OFFSET, FRONT_WALL_THICKNESS])
     cylinder(r=ALIGNMENT_TAB_RADIUS, h=ALIGNMENT_TAB_LENGTH);
 
-    cylinder(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS/2 - 0.1, h=FRONT_WALL_THICKNESS + 0.002);
+    translate([0, 0, -offset])
+    cylinder(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS/2 + offset, h=FRONT_WALL_THICKNESS + offset * 2);
     translate([0,0,FRONT_WALL_THICKNESS/2])
-    lock_ring(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS/2, offset=offset);
+
+    copy_mirror(vec=[1,0,0])
+    translate([MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS/2, 0, 0])
+    sphere(r=0.4 + offset);
+    //lock_ring(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS/2, offset=offset);
 
 
 }
 
 module front(offset=0) {
 
-    
     difference() {
         union() {
             front_alignment_tabs();
@@ -135,7 +144,7 @@ module front(offset=0) {
             cylinder(d=FRONT_SHAFT_DIAMETER, h=FRONT_SHAFT_LENGTH);
         }
         translate([0, 0, -0.001])
-        cylinder(d=SHAFT_DIAMETER + 0.4, h=FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS + 0.002);
+        cylinder(d=SHAFT_DIAMETER + 0.45, h=FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS + 0.002);
 
         // lock ring recess
         translate([0, 0, FRONT_WALL_THICKNESS + LOCK_OFFSET])
@@ -151,7 +160,6 @@ module sensor_holder() {
 
     // small little guide for the sensor
     translate([0,0, REAR_WALL_THICKNESS])
-    rotate([0, 0, MAG_ROTATION_OFFSET])
     difference() {
 
         // overlap cylinder
@@ -164,30 +172,46 @@ module sensor_holder() {
     }
 
     // base of the holder
-    rotate([0, 0, MAG_ROTATION_OFFSET])
     difference() {
-        cylinder(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS, h=REAR_WALL_THICKNESS + FRONT_WALL_THICKNESS + MAG_DIAMETER);
-        //translate([0,0, REAR_WALL_THICKNESS + MAG_DIAMETER -0.001])
-        //cylinder(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS/2, h=FRONT_WALL_THICKNESS + 0.002);
+        cylinder(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS, h=REAR_WALL_THICKNESS + FRONT_WALL_THICKNESS + SENSOR_HOLDER_INNER_HEIGHT);
+
         translate([0,0, REAR_WALL_THICKNESS - 0.001])
-        cylinder(r=MAG_HOLDER_RADIUS + 0.2, h=MAG_DIAMETER + 0.002);
+        cylinder(r=MAG_HOLDER_RADIUS + 0.3, h=SENSOR_HOLDER_INNER_HEIGHT + 0.002);
 
         translate([0, - (SENSOR_WIDTH / 2), -0.001]) 
         cube([SENSOR_LEAD_DEPTH, SENSOR_WIDTH,REAR_WALL_THICKNESS + 0.002]);
 
-        translate([0,0, REAR_WALL_THICKNESS + MAG_DIAMETER])
-        front_alignment_tabs(0.25);
+        translate([0,0, REAR_WALL_THICKNESS + SENSOR_HOLDER_INNER_HEIGHT])
+        front_alignment_tabs(0.1);
 
     }
-
-    // lockring
-    //translate([0,0, REAR_WALL_THICKNESS + MAG_DIAMETER + FRONT_WALL_THICKNESS / 2])
-    //lock_ring(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS/2);
-
 
 
 }
 
+module clip() {
+    inner_diameter = FRONT_SHAFT_DIAMETER - 1;
+    difference() {
+        union() {
+            hull() {
+                cylinder(d=CLIP_WIDTH, h=CLIP_HEIGHT);
+                translate([-CLIP_WIDTH/2, CLIP_LENGTH - CLIP_WIDTH, 0])
+                cube([CLIP_WIDTH , CLIP_WIDTH, CLIP_HEIGHT]);
+            }
+            translate([-CLIP_WIDTH/2, CLIP_LENGTH , 0])
+            cube([CLIP_WIDTH , CLIP_WIDTH * 0.25, CLIP_HEIGHT * 2]);
+        }
+        hull() {
+            translate([0,0, -0.001])
+            cylinder(d=inner_diameter, h=CLIP_HEIGHT + 0.002);
+            translate([-(inner_diameter - 1)/2, -inner_diameter, -0.001])
+            cube([inner_diameter - 1, 1, CLIP_HEIGHT + 0.002]);
+        }
+
+    }
+
+
+}
 
 
 translate([0,0,30 + SHAFT_HEIGHT])
@@ -198,3 +222,9 @@ mag_holder();
 
 
 sensor_holder();
+
+translate([0, 0, 40 + SHAFT_HEIGHT + FRONT_SHAFT_LENGTH])
+clip();
+
+
+
