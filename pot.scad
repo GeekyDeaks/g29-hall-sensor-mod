@@ -1,4 +1,4 @@
-$fn = 50;
+$fn = 100;
 
 MAG_DIAMETER = 6.15;
 MAG_HEIGHT = 3;
@@ -8,8 +8,12 @@ MAG_ROTATION_OFFSET=0;
 
 MAG_HOLDER_RADIUS = sqrt( pow(MAG_DIAMETER / 2, 2) + pow(MAG_HEIGHT + MAG_DISTANCE, 2) );
 
+
+DUPONT_WIDTH=8.1;
+DUPONT_HEIGHT=3;
+
 FRONT_WALL_THICKNESS = 2;
-REAR_WALL_THICKNESS = 2;
+REAR_WALL_THICKNESS = 2 + DUPONT_HEIGHT;
 SIDE_WALL_THICKNESS = 3;
 
 FRONT_SHAFT_LENGTH = 9; // 
@@ -41,6 +45,7 @@ LOCK_WIDTH = 2;
 CLIP_WIDTH = FRONT_SHAFT_DIAMETER + 2;
 CLIP_LENGTH = 15.5;
 CLIP_HEIGHT = LOCK_WIDTH - 0.2;
+
 
 module copy_mirror(vec=[0,1,0]) 
 { 
@@ -187,8 +192,22 @@ module sensor_holder() {
         // little indentation to show Vcc for the sensor
         translate([SENSOR_LEAD_DEPTH + .7, SENSOR_WIDTH * .4, -0.001])
         linear_extrude(1)
-        polygon([ [0, 0], [1.5, .8], [1.5, -.8]]);
+        polygon([ [0, 0], [2, 1], [2, -1]]);
         //cylinder(r=1, h=1);
+
+        // dupont connector
+
+        translate([ - (MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS + 0.001), 0, 0]) {
+            translate([0, -DUPONT_WIDTH / 2, 1])
+            cube([MAG_HOLDER_RADIUS + SENSOR_LEAD_DEPTH + 0.002, DUPONT_WIDTH, DUPONT_HEIGHT]);
+
+            translate([0, -(DUPONT_WIDTH - 1) / 2, -0.001])
+            cube([MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS + 0.002, DUPONT_WIDTH - 1, DUPONT_HEIGHT]);
+
+        }
+        
+        
+
 
     }
 
