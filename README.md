@@ -45,10 +45,17 @@ This completely replaces the stock potentiometer with a 3D printed replacement. 
 ![assembled](img/hall_pot_assembled.jpg)
 ![explode](img/hall_pot_pieces.jpg)
 
+## STL
 
-If you want to see how things took shape or throw in suggestions you can find some of the musings on racedepartment: https://www.racedepartment.com/threads/g27-g29-hall-sensor-mod.190696/
+* [explode](pot/stl/explode.stl)
+* [clip](pot/stl/clip.stl)
+* [front](pot/stl/front.stl)
+* [mag-holder](pot/stl/mag-holder.stl)
+* [sesnor-holder](pot/stl/sensor-holder.stl)
 
 # reference
+
+If you want to see how things took shape or throw in suggestions you can find some of the musings on racedepartment: https://www.racedepartment.com/threads/g27-g29-hall-sensor-mod.190696/
 
 * A1324 (https://docs.rs-online.com/958c/0900766b813d193a.pdf)
 * A1319 (https://docs.rs-online.com/1a99/0900766b815eefb8.pdf)
