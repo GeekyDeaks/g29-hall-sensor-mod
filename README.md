@@ -4,7 +4,7 @@ Modification to replace the stock potentiometers in the G29/G27 pedals with hall
 
 There are two alternative designs in this repo
 
-1. modification using the original pot as part of the magnet assembly
+1. modification using the original pot as part of the magnet holder assembly
 2. complete replacement of the original pot with a 3D printed design
 
 
@@ -32,6 +32,8 @@ The A1324 is rated at 5V, but it was found during testing that it actually works
 This design engages with the stock potentiometer, using it as the base of the magenet holder.
 
 ![mod](img/hall_mk2_1_model.png)
+
+![test](img/hall_mk2_1.jpg)
 
 There are two alternatives to this design:
 
