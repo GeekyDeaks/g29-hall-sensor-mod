@@ -2,15 +2,17 @@
 
 Modification to replace the stock potentiometers in the G29/G27 pedals with hall sensors
 
+![closeup](img/closeup.jpg)
+
 There are two alternative designs in this repo
 
-1. modification using the original pot as part of the magnet holder assembly
+1. modification using the original pot as part of the magnet holder assembly (as show in the above image)
 2. complete replacement of the original pot with a 3D printed design
 
 
-Both designs require some additonal additonal parts to accompany the 3D model
+Both designs require some additonal additional parts to accompany the 3D model
 
-1. 2x 6mm Diameter 3mm high magnets
+1. 2x 6mm diameter 3mm high magnets
 2. [A1324](https://docs.rs-online.com/958c/0900766b813d193a.pdf) hall effect sensor 
 
 # Hall Sensor
