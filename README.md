@@ -51,7 +51,7 @@ This completely replaces the stock potentiometer with a 3D printed replacement. 
 * [clip](pot/stl/clip.stl)
 * [front](pot/stl/front.stl)
 * [mag-holder](pot/stl/mag-holder.stl)
-* [sesnor-holder](pot/stl/sensor-holder.stl)
+* [sensor-holder](pot/stl/sensor-holder.stl)
 
 # reference
 
