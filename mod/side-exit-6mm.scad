@@ -71,5 +71,5 @@ if(PART == "explode") {
 }
 
 if(PART == "mag") mag_holder();
-if(PART == "sensor") mag_holder();
+if(PART == "sensor") sensor_holder_side_exit();
 
