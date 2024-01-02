@@ -17,7 +17,7 @@ FRONT_WALL_THICKNESS = 2;
 REAR_WALL_THICKNESS = 2 + DUPONT_HEIGHT;
 SIDE_WALL_THICKNESS = 3;
 
-FRONT_SHAFT_LENGTH = 9; // 
+FRONT_SHAFT_LENGTH = 9; //
 FRONT_SHAFT_DIAMETER = 8.85; //
 
 EXPOSED_SHAFT_HEIGHT = 15; // how much of the shaft protrudes from the front cover
@@ -50,10 +50,10 @@ CLIP_HEIGHT = LOCK_WIDTH - 0.2;
 EPS = 1e-3;
 
 
-module copy_mirror(vec=[0,1,0]) 
-{ 
-    children(); 
-    mirror(vec) children(); 
+module copy_mirror(vec=[0,1,0])
+{
+    children();
+    mirror(vec) children();
 }
 
 module lock_ring(r=10, offset=0) {
@@ -84,14 +84,14 @@ module mag_holder() {
 
         rotate([0, 0, MAG_ROTATION_OFFSET])
         copy_mirror()
-        translate([0, -MAG_DISTANCE, height / 2]) 
-        rotate([90, 0, 0]) 
+        translate([0, -MAG_DISTANCE, height / 2])
+        rotate([90, 0, 0])
         union() {
             cylinder(d1 = MAG_DIAMETER, d2 = MAG_DIAMETER + 0.1, h = MAG_HEIGHT + EPS);
             translate([0,0, MAG_HEIGHT * 1.5])
             cube([MAG_DIAMETER * 2, MAG_DIAMETER, MAG_HEIGHT], center=true);
         }
-        
+
         // hole for the sensor
         translate([0,0,-EPS])
         cylinder(d=SENSOR_HOLDER_DIAMETER + 0.4, h = SENSOR_HEIGHT + 0.2);
@@ -104,7 +104,7 @@ module mag_holder() {
 
 module sensor_profile() {
 
-    translate([-SENSOR_LEAD_DEPTH, -SENSOR_WIDTH / 2, 0]) 
+    translate([-SENSOR_LEAD_DEPTH, -SENSOR_WIDTH / 2, 0])
     polygon([
         [0, 0],
         [0, SENSOR_WIDTH],
@@ -208,12 +208,7 @@ module sensor_holder() {
             cube([MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS + 2 * EPS, DUPONT_WIDTH - 1, DUPONT_HEIGHT]);
 
         }
-        
-        
-
-
     }
-
 
 }
 
@@ -233,10 +228,7 @@ module clip() {
         cylinder(d=inner_diameter, h=CLIP_HEIGHT + 2 * EPS);
         translate([0, -inner_diameter/2, CLIP_HEIGHT/2])
         cube([inner_diameter - 1.5, inner_diameter, CLIP_HEIGHT + 2 * EPS], center=true);
-
-
     }
-
 
 }
 
@@ -257,8 +249,3 @@ if(PART == "clip") clip();
 if(PART == "sensor") sensor_holder();
 if(PART == "mag") mag_holder();
 if(PART == "front") front();
-
-
-
-
-
