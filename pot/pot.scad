@@ -47,6 +47,8 @@ CLIP_WIDTH = FRONT_SHAFT_DIAMETER + 2;
 CLIP_LENGTH = 15.5;
 CLIP_HEIGHT = LOCK_WIDTH - 0.2;
 
+EPS = 1e-3;
+
 
 module copy_mirror(vec=[0,1,0]) 
 { 
@@ -63,12 +65,12 @@ module lock_ring(r=10, offset=0) {
 
 module shaft() {
 
-    cylinder(d=SHAFT_DIAMETER, h=SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT + 0.001);
+    cylinder(d=SHAFT_DIAMETER, h=SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT + EPS);
     translate([0,0, SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT])
     difference() {
         cylinder(d1=SHAFT_DIAMETER, d2=SHAFT_DIAMETER * .95, h=SHAFT_RECESS_HEIGHT);
         translate([SHAFT_DIAMETER/2 - SHAFT_RECESS, -SHAFT_DIAMETER/2, 0])
-        cube([SHAFT_RECESS + 0.001, SHAFT_DIAMETER, SHAFT_RECESS_HEIGHT + 0.001]);
+        cube([SHAFT_RECESS + EPS, SHAFT_DIAMETER, SHAFT_RECESS_HEIGHT + EPS]);
     }
 
 }
@@ -85,13 +87,13 @@ module mag_holder() {
         translate([0, -MAG_DISTANCE, height / 2]) 
         rotate([90, 0, 0]) 
         union() {
-            cylinder(d1 = MAG_DIAMETER, d2 = MAG_DIAMETER + 0.1, h = MAG_HEIGHT + 0.001);
+            cylinder(d1 = MAG_DIAMETER, d2 = MAG_DIAMETER + 0.1, h = MAG_HEIGHT + EPS);
             translate([0,0, MAG_HEIGHT * 1.5])
             cube([MAG_DIAMETER * 2, MAG_DIAMETER, MAG_HEIGHT], center=true);
         }
         
         // hole for the sensor
-        translate([0,0,-0.001])
+        translate([0,0,-EPS])
         cylinder(d=SENSOR_HOLDER_DIAMETER + 0.4, h = SENSOR_HEIGHT + 0.2);
     }
     // add the shaft
@@ -149,13 +151,13 @@ module front(offset=0) {
             translate([0, 0, FRONT_WALL_THICKNESS])
             cylinder(d=FRONT_SHAFT_DIAMETER, h=FRONT_SHAFT_LENGTH);
         }
-        translate([0, 0, -0.001])
-        cylinder(d=SHAFT_DIAMETER + 0.45, h=FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS + 0.002);
+        translate([0, 0, -EPS])
+        cylinder(d=SHAFT_DIAMETER + 0.45, h=FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS + 2 * EPS);
 
         // lock ring recess
         translate([0, 0, FRONT_WALL_THICKNESS + LOCK_OFFSET])
         difference() {
-            cylinder(d=FRONT_SHAFT_DIAMETER + 0.001, h=LOCK_WIDTH);
+            cylinder(d=FRONT_SHAFT_DIAMETER + EPS, h=LOCK_WIDTH);
             cylinder(d=FRONT_SHAFT_DIAMETER - 1, h=LOCK_WIDTH);
         }
     }
@@ -181,29 +183,29 @@ module sensor_holder() {
     difference() {
         cylinder(r=MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS, h=REAR_WALL_THICKNESS + FRONT_WALL_THICKNESS + SENSOR_HOLDER_INNER_HEIGHT);
 
-        translate([0,0, REAR_WALL_THICKNESS - 0.001])
-        cylinder(r=MAG_HOLDER_RADIUS + 0.3, h=SENSOR_HOLDER_INNER_HEIGHT + 0.002);
+        translate([0,0, REAR_WALL_THICKNESS - EPS])
+        cylinder(r=MAG_HOLDER_RADIUS + 0.3, h=SENSOR_HOLDER_INNER_HEIGHT + 2 * EPS);
 
-        translate([0, - (SENSOR_WIDTH / 2), -0.001]) 
-        cube([SENSOR_LEAD_DEPTH, SENSOR_WIDTH,REAR_WALL_THICKNESS + 0.002]);
+        translate([0, - (SENSOR_WIDTH / 2), -EPS])
+        cube([SENSOR_LEAD_DEPTH, SENSOR_WIDTH,REAR_WALL_THICKNESS + 2 * EPS]);
 
         translate([0,0, REAR_WALL_THICKNESS + SENSOR_HOLDER_INNER_HEIGHT])
         front_alignment_tabs(0.1);
 
         // little indentation to show Vcc for the sensor
-        translate([SENSOR_LEAD_DEPTH + .7, SENSOR_WIDTH * .4, -0.001])
+        translate([SENSOR_LEAD_DEPTH + .7, SENSOR_WIDTH * .4, -EPS])
         linear_extrude(1)
         polygon([ [0, 0], [2, 1], [2, -1]]);
         //cylinder(r=1, h=1);
 
         // dupont connector
 
-        translate([ - (MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS + 0.001), 0, 0]) {
+        translate([ - (MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS + EPS), 0, 0]) {
             translate([0, -DUPONT_WIDTH / 2, 1])
-            cube([MAG_HOLDER_RADIUS + SENSOR_LEAD_DEPTH + 0.002, DUPONT_WIDTH, DUPONT_HEIGHT]);
+            cube([MAG_HOLDER_RADIUS + SENSOR_LEAD_DEPTH + 2 * EPS, DUPONT_WIDTH, DUPONT_HEIGHT]);
 
-            translate([0, -(DUPONT_WIDTH - 1) / 2, -0.001])
-            cube([MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS + 0.002, DUPONT_WIDTH - 1, DUPONT_HEIGHT]);
+            translate([0, -(DUPONT_WIDTH - 1) / 2, -EPS])
+            cube([MAG_HOLDER_RADIUS + SIDE_WALL_THICKNESS + 2 * EPS, DUPONT_WIDTH - 1, DUPONT_HEIGHT]);
 
         }
         
@@ -227,10 +229,10 @@ module clip() {
             translate([-CLIP_WIDTH/2, CLIP_LENGTH , 0])
             cube([CLIP_WIDTH , CLIP_WIDTH * 0.25, CLIP_HEIGHT * 2]);
         }
-        translate([0,0, -0.001])
-        cylinder(d=inner_diameter, h=CLIP_HEIGHT + 0.002);
+        translate([0,0, -EPS])
+        cylinder(d=inner_diameter, h=CLIP_HEIGHT + 2 * EPS);
         translate([0, -inner_diameter/2, CLIP_HEIGHT/2])
-        cube([inner_diameter - 1.5, inner_diameter, CLIP_HEIGHT + 0.002], center=true);
+        cube([inner_diameter - 1.5, inner_diameter, CLIP_HEIGHT + 2 * EPS], center=true);
 
 
     }
