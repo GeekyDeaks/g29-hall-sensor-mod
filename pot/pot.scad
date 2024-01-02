@@ -64,15 +64,14 @@ module lock_ring(r=10, offset=0) {
 }
 
 module shaft() {
-
-    cylinder(d=SHAFT_DIAMETER, h=SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT + EPS);
-    translate([0,0, SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT])
     difference() {
-        cylinder(d1=SHAFT_DIAMETER, d2=SHAFT_DIAMETER * .95, h=SHAFT_RECESS_HEIGHT);
-        translate([SHAFT_DIAMETER/2 - SHAFT_RECESS, -SHAFT_DIAMETER/2, 0])
+        // complete shaft, just a cylinder
+        cylinder(d=SHAFT_DIAMETER, h=SHAFT_HEIGHT);
+
+        // shaft recess, 
+        translate([SHAFT_DIAMETER/2 - SHAFT_RECESS, -SHAFT_DIAMETER/2, SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT])
         cube([SHAFT_RECESS + EPS, SHAFT_DIAMETER, SHAFT_RECESS_HEIGHT + EPS]);
     }
-
 }
 
 module mag_holder() {
