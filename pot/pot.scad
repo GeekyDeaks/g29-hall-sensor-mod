@@ -21,7 +21,7 @@ FRONT_SHAFT_LENGTH = 9; //
 FRONT_SHAFT_DIAMETER = 8.85; //
 
 EXPOSED_SHAFT_HEIGHT = 15; // how much of the shaft protrudes from the front cover
-SHAFT_HEIGHT = EXPOSED_SHAFT_HEIGHT + FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS;
+SHAFT_HEIGHT = EXPOSED_SHAFT_HEIGHT + FRONT_SHAFT_LENGTH + FRONT_WALL_THICKNESS + MAG_DIAMETER;
 SHAFT_DIAMETER = 6.3;
 SHAFT_RECESS = 2.4;
 SHAFT_RECESS_HEIGHT = 11;
@@ -68,19 +68,24 @@ module shaft() {
         // complete shaft, just a cylinder
         cylinder(d=SHAFT_DIAMETER, h=SHAFT_HEIGHT);
 
-        // shaft recess, 
+        // shaft recess,
         translate([SHAFT_DIAMETER/2 - SHAFT_RECESS, -SHAFT_DIAMETER/2, SHAFT_HEIGHT - SHAFT_RECESS_HEIGHT])
         cube([SHAFT_RECESS + EPS, SHAFT_DIAMETER, SHAFT_RECESS_HEIGHT + EPS]);
     }
 }
 
 module mag_holder() {
-
+    // MAG_DIAMETER=5.15;
     height = MAG_DIAMETER * 0.95;
 
     difference() {
-        cylinder(r=MAG_HOLDER_RADIUS, h=height);
+        // shaft and magnet holding body
+        union(){
+            shaft();
+            cylinder(r=MAG_HOLDER_RADIUS, h=height);
+        }
 
+        // holes for magnets
         rotate([0, 0, MAG_ROTATION_OFFSET])
         copy_mirror()
         translate([0, -MAG_DISTANCE, height / 2])
@@ -95,10 +100,6 @@ module mag_holder() {
         translate([0,0,-EPS])
         cylinder(d=SENSOR_HOLDER_DIAMETER + 0.4, h = SENSOR_HEIGHT + 0.2);
     }
-    // add the shaft
-    translate([0,0,height])
-    shaft();
-
 }
 
 module sensor_profile() {
